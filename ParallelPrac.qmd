@@ -1,26 +1,249 @@
 
 ## Q1
 ```{r}
+#| warning: FALSE
+#| loading: FALSE
+#| results: asis
+library(foreach)
+library(doParallel)
+
+# Set up parallel backend
+cl <- makeCluster(detectCores() - 1)
+registerDoParallel(cl)
+
+# Set the number of repetitions
+n_reps <- 100
+
+# Perform the simulation
+results <- foreach(i = 1:n_reps, .combine = rbind) %dopar% {
+  sample_data <- rexp(100, rate = 1)  # Exponential distribution with mean 1 (rate = 1)
+  sample_mean <- mean(sample_data)
+  sample_variance <- var(sample_data)
+  c(mean = sample_mean, variance = sample_variance)
+}
+
+# Stop parallel backend
+stopCluster(cl)
+
+# Convert results to a data frame
+results_df <- as.data.frame(results)
+knitr::kable(head(results_df),digits=2,col.names = c("Mean","Variance"),caption="")
 
 ```
 
 ## Q2
 ```{r}
+#| warning: true
+#| message: false
+#| loading: false
+# Load necessary packages
+library(MASS)
+library(foreach)
+library(doParallel)
+
+# Set up parallel processing (3 cores in this example)
+cl <- makeCluster(3)
+registerDoParallel(cl)
+
+# Define the bootstrap function that calculates the median
+bootstrapMedian <- function(data, n) {
+  # Sample 'n' elements from the data with replacement
+  sample_data <- sample(data, size = n, replace = TRUE)
+  return(median(sample_data))
+}
+
+
+# Run bootstrapping serially
+set.seed(42)  # For reproducibility
+system.time({
+  bootstrapped_medians_serial <- sapply(1:1000, function(x) bootstrapMedian(galaxies, n = 82))
+})
+
+# Output a sample of the results
+print(head(bootstrapped_medians_serial))
+
+
+
+# Run bootstrapping in parallel
+# Set up parallel computing
+library(doParallel)
+cl <- makeCluster(4)  # Create a cluster with 4 workers
+registerDoParallel(cl)
+
+# Run bootstrapping in parallel
+set.seed(42)  # For reproducibility
+system.time({
+  bootstrapped_medians_parallel <- foreach(i = 1:1000, .combine = c, .packages = "MASS") %dopar% {
+    bootstrapMedian(galaxies, n = 82)
+  }
+})
+
+# Stop the cluster after finishing
+stopCluster(cl)
+
+# Output a sample of the results
+print(head(bootstrapped_medians_parallel))
+
+
 
 ```
 
+For the current bootstrapping task with the galaxies dataset, serial execution is faster due to the small task size and the cost of parallelization overhead. If you were processing much larger datasets or running more complex computations, you would likely see greater benefits from parallelization.
+
 ## Q3
 ```{r}
+set.seed(42)  # For reproducibility
+
+# Step 1: Generate the original sample (size 50 from exponential distribution)
+original_sample <- rexp(50, rate = 1)  # Exponential distribution with mean = 1
+
+
+bootstrap_mean <- function(sample, n_iterations = 1000) {
+  bootstrap_stats <- numeric(n_iterations)
+  
+  for (i in 1:n_iterations) {
+    bootstrap_sample <- sample(sample, replace = TRUE)
+    bootstrap_stats[i] <- mean(bootstrap_sample)  # Calculating the mean for each bootstrap sample
+  }
+  
+  return(bootstrap_stats)
+}
+
+# Step 3: Perform bootstrap resampling
+n_iterations <- 1000
+bootstrap_stats <- bootstrap_mean(original_sample, n_iterations)
+
+# Step 4: Compute percentile-based confidence interval
+lower_percentile <- 2.5
+upper_percentile <- 97.5
+
+lower_bound <- quantile(bootstrap_stats, lower_percentile / 100)
+upper_bound <- quantile(bootstrap_stats, upper_percentile / 100)
+
+# True value 
+true_value <- 1
+
+# Step 5: Estimate coverage
+coverage <- ifelse(true_value >= lower_bound & true_value <= upper_bound, 1, 0)
+
+# Repeat the process to estimate coverage over multiple trials
+n_trials <- 1000
+coverage_results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+  bootstrap_stats <- bootstrap_mean(original_sample, n_iterations)
+  lower_bound <- quantile(bootstrap_stats, lower_percentile / 100)
+  upper_bound <- quantile(bootstrap_stats, upper_percentile / 100)
+  coverage_results[i] <- ifelse(true_value >= lower_bound & true_value <= upper_bound, 1, 0)
+}
+
+# Coverage estimate (proportion of times true value is inside the confidence interval)
+coverage_estimate <- mean(coverage_results)
+coverage_estimate
 
 ```
 
 ## Q4
 ```{r}
+# Load necessary packages
+library(foreach)
+library(doParallel)  # For parallel processing
+library(iterators)    # For irnorm function
+
+# Set the seed for reproducibility
+set.seed(1234)
+
+# Register parallel backend (4 workers in this case)
+cl <- makeCluster(4)
+registerDoParallel(cl)
+
+# Create a list of 3 vectors, each containing 5 random variables from a normal distribution
+vectors <- foreach(i = 1:3, .combine = 'list', .packages = 'iterators') %dopar% {
+  it <- irnorm(5)  # Create an iterator for 5 random normal variables
+  unlist(sapply(1:5, function(x) nextElem(it)))  # Extract the values from the iterator
+}
+
+# Print the vectors to check
+print(vectors)
+
+# Find the largest value in each vector using foreach in parallel
+largest_values <- foreach(vec = vectors, .combine = 'c') %dopar% {
+  # Apply max() correctly to each vector (make sure the result is combined as a vector of max values)
+  max_value <- max(unlist(vec))  
+  max_value  # Return the largest value from each vector
+}
+
+# Stop the cluster after computation is done
+stopCluster(cl)
+
+# Print the largest values
+print(largest_values)
+
+
 
 ```
 
 ## Q5
 ```{r}
+# Load necessary packages
+library(foreach)
+library(doParallel)  # For parallel processing
+library(iterators)    # For irnorm function
+library(parallel)     # For parLapply
+library(tictoc)       # For timing execution
+
+# Set the seed for reproducibility
+set.seed(1234)
+
+# Register parallel backend (4 workers in this case) for foreach
+cl <- makeCluster(4)
+registerDoParallel(cl)
+
+# Function to create random vectors
+create_vectors <- function() {
+  vectors <- foreach(i = 1:3, .combine = 'list', .packages = 'iterators') %dopar% {
+    it <- irnorm(5)  # Create an iterator for 5 random normal variables
+    unlist(sapply(1:5, function(x) nextElem(it)))  # Extract the values from the iterator
+  }
+  return(vectors)
+}
+
+# 1. parLapply method (make sure the iterators package is available on the worker nodes)
+tic("parLapply execution")
+vectors_parLapply <- parLapply(cl, 1:3, function(i) {
+  library(iterators)  # Ensure the iterators package is loaded on each worker
+  it <- irnorm(5)
+  unlist(sapply(1:5, function(x) nextElem(it)))
+})
+largest_values_parLapply <- sapply(vectors_parLapply, function(vec) max(unlist(vec)))
+toc()
+
+# 2. foreach method (parallel)
+tic("foreach execution")
+vectors_foreach <- create_vectors()
+largest_values_foreach <- foreach(vec = vectors_foreach, .combine = 'c') %dopar% {
+  max(unlist(vec))
+}
+toc()
+
+# 3. replicate method (sequential)
+tic("replicate execution")
+vectors_replicate <- replicate(3, unlist(sapply(1:5, function(x) rnorm(1))), simplify = FALSE)
+largest_values_replicate <- sapply(vectors_replicate, function(vec) max(vec))
+toc()
+
+# Stop the cluster after computation is done
+stopCluster(cl)
+
+# Print the results
+print("Largest values from parLapply:")
+print(largest_values_parLapply)
+
+print("Largest values from foreach:")
+print(largest_values_foreach)
+
+print("Largest values from replicate:")
+print(largest_values_replicate)
 
 ```
 

@@ -1,1 +1,3 @@
 # Welcome to Parallel Prac
+
+[GitHub Link](https://github.com/NesanNaidoo/ParallelPrac)
