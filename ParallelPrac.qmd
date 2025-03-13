@@ -1,3 +1,4 @@
+[GitHub Link](https://github.com/NesanNaidoo/ParallelPrac)
 
 ## Q1
 ```{r}
@@ -32,6 +33,7 @@ knitr::kable(head(results_df),digits=2,col.names = c("Mean","Variance"),caption=
 ```
 
 ## Q2
+
 ```{r}
 #| warning: true
 #| message: false
@@ -91,6 +93,7 @@ print(head(bootstrapped_medians_parallel))
 For the current bootstrapping task with the galaxies dataset, serial execution is faster due to the small task size and the cost of parallelization overhead. If you were processing much larger datasets or running more complex computations, you would likely see greater benefits from parallelization.
 
 ## Q3
+
 ```{r}
 set.seed(42)  # For reproducibility
 
@@ -144,6 +147,7 @@ coverage_estimate
 ```
 
 ## Q4
+
 ```{r}
 # Load necessary packages
 library(foreach)
@@ -184,6 +188,7 @@ print(largest_values)
 ```
 
 ## Q5
+
 ```{r}
 # Load necessary packages
 library(foreach)
@@ -246,4 +251,3 @@ print("Largest values from replicate:")
 print(largest_values_replicate)
 
 ```
-
