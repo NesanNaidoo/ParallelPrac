@@ -189,6 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><a href="https://github.com/NesanNaidoo/ParallelPrac">GitHub Link</a></p>
 <div class="cell" loading="false">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
@@ -225,33 +226,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">result.1</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.39</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">0.89</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">result.2</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.81</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">result.3</td>
-<td style="text-align: right;">1.08</td>
-<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">1.38</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">result.4</td>
-<td style="text-align: right;">1.10</td>
-<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">1.14</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">result.5</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">1.61</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">result.6</td>
-<td style="text-align: right;">1.09</td>
-<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.74</td>
 </tr>
 </tbody>
 </table>
@@ -283,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.09    0.01    0.11 </code></pre>
+   0.07    0.00    0.06 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Output a sample of the results</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(bootstrapped_medians_serial))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -305,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.55    0.11    1.06 </code></pre>
+   0.38    0.06    0.55 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stop the cluster after finishing</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
@@ -313,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Output a sample of the results</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(bootstrapped_medians_parallel))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 21137.0 20848.0 21492.0 20833.5 21239.0 21653.0</code></pre>
+<pre><code>[1] 22242.0 20991.5 21596.5 20318.0 20422.0 20318.0</code></pre>
 </div>
 </div>
 <p>For the current bootstrapping task with the galaxies dataset, serial execution is faster due to the small task size and the cost of parallelization overhead. If you were processing much larger datasets or running more complex computations, you would likely see greater benefits from parallelization.</p>
@@ -400,29 +401,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [[1]][[1]]
-           [,1]       [,2]        [,3]       [,4]       [,5]
-[1,] -0.8882516  0.5530257  0.50804781  0.5319570  0.1274931
-[2,]  1.8419585  0.1807020  2.12615105 -0.1965465  2.1854988
-[3,] -0.4582521 -0.3668049 -0.78095864  0.9243293 -0.8228405
-[4,] -1.1088474  1.2658526 -0.02627349 -0.8433929 -0.4368993
-[5,]  0.3618803  0.1623761 -0.61118021 -1.7706468 -1.4526011
+            [,1]        [,2]       [,3]         [,4]       [,5]
+[1,] -0.23866340 -1.12067540 -0.3418814  0.945709102  0.1691004
+[2,]  0.09203103 -0.01183511 -0.1007665  0.002618899  0.1574406
+[3,] -1.57916258  1.40056630  0.8802168  0.061284268 -0.9588420
+[4,] -0.03408178 -2.21326161 -0.7894498 -1.204639566  0.7384709
+[5,]  0.92085535  0.15734255  0.1327716  0.992041363  0.9573431
 
 [[1]][[2]]
-           [,1]       [,2]        [,3]       [,4]       [,5]
-[1,]  2.2375147  1.0848369 -0.32825899 -0.6467536 -0.3309042
-[2,]  1.2092702 -1.1638105  0.62166049 -0.3888259  0.7053950
-[3,] -1.2746993 -0.3643742 -1.31675076  0.2395872 -0.9352317
-[4,]  1.0542090 -1.3586677  0.86780683 -0.8696557  1.0907645
-[5,]  0.5076115 -0.2834928  0.02659456  0.9705340 -0.6549447
+            [,1]       [,2]        [,3]      [,4]       [,5]
+[1,] -0.91248025 -0.3679866 -0.78467523  1.207014 -2.7867288
+[2,]  0.61829851 -1.3652734 -0.07207607  1.140327  0.9753869
+[3,] -0.25989257  0.3038909  0.46285482  1.182729  0.2456694
+[4,]  1.14539248 -0.4713989  0.09442086  0.733097  1.8923220
+[5,]  0.07681321 -0.3829701 -0.59991804 -1.022952 -0.6625983
 
 
 [[2]]
-           [,1]       [,2]       [,3]        [,4]       [,5]
-[1,]  0.3957007  0.2659157  0.4224899 -0.28232056 -0.7491363
-[2,]  0.2893169  0.1986392  1.3502966 -0.53405652 -0.2401563
-[3,] -0.2599960 -0.1318797 -1.4604409  0.76693652  0.6732195
-[4,]  1.4035346  1.9477988  1.3759127 -0.05135932  0.5511672
-[5,] -0.1688861 -0.3719002 -0.5504700  0.13930371  0.3415042</code></pre>
+            [,1]       [,2]        [,3]       [,4]       [,5]
+[1,] -0.41253684 -0.2077409 -0.69727838  0.9420448 -0.4152977
+[2,] -0.68371200  0.8367237  0.40658991 -0.6224526  0.0362583
+[3,] -0.76911077 -1.2062264 -1.88944596 -1.0941569 -0.8761393
+[4,] -0.01308755 -1.5449298  0.09554338  1.0990229 -0.2747566
+[5,] -0.55008389 -0.7009645 -0.39348561 -1.7725473  1.1068378</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the largest value in each vector using foreach in parallel</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>largest_values <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">vec =</span> vectors, <span class="at">.combine =</span> <span class="st">'c'</span>) <span class="sc">%dopar%</span> {</span>
@@ -437,7 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the largest values</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(largest_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.237515 1.947799</code></pre>
+<pre><code>[1] 1.892322 1.106838</code></pre>
 </div>
 </div>
 </section>
@@ -477,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>largest_values_parLapply <span class="ot">&lt;-</span> <span class="fu">sapply</span>(vectors_parLapply, <span class="cf">function</span>(vec) <span class="fu">max</span>(<span class="fu">unlist</span>(vec)))</span>
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>parLapply execution: 0.04 sec elapsed</code></pre>
+<pre><code>parLapply execution: 0.03 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. foreach method (parallel)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"foreach execution"</span>)</span>
@@ -487,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>foreach execution: 0.08 sec elapsed</code></pre>
+<pre><code>foreach execution: 0.05 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. replicate method (sequential)</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"replicate execution"</span>)</span>
@@ -507,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(largest_values_parLapply)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.584873 3.033492 1.381301</code></pre>
+<pre><code>[1] 1.797441 2.326435 1.457714</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Largest values from foreach:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -515,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(largest_values_foreach)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.043208 1.753531</code></pre>
+<pre><code>[1] 2.244236 2.730156</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Largest values from replicate:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
